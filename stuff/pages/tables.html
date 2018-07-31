@@ -45,24 +45,31 @@
                 function runReservationQuery(){
                     var currentURL = window.location.origin;
 
-		            $.ajax({url: currentURL + "/api/tables", method: "GET"})
-			        .done(function(tableData) {
-					$("#tableSection").empty();
-					$("#waitlistSection").empty();
+$.ajax({url: currentURL + "/api/tables", method: "GET"})
+    .done(function(tableData) {
+            $("#tableSection").empty();
+            $("#waitlistSection").empty();
 
-				    // Loop through and display each of the customers
-				    for (var i=0; i<tableData.length && i < 5; i++){
+        // Loop through and display each of the customers
+        for (var i=0; i<tableData.length && i < 5; i++){
 
-					// Create the HTML Well (Section) and Add the table content for each reserved table
-					var tableSection = $("<div>");
-					tableSection.addClass('well');
-					tableSection.attr('id', 'tableWell-' + i+1)
-					$('#tableSection').append(tableSection);
+            // Create the HTML Well (Section) and Add the table content for each reserved table
+            var tableSection = $("<div>");
+            tableSection.addClass('well');
+            tableSection.attr('id', 'tableWell-' + i+1)
+            $('#tableSection').append(tableSection);
 
-                    var tableNumber = i + 1;
-                    
-                    // Then display the remaining fields in the HTML (Section Name, Date, URL)
-					$("#tableWell-"+ i+1).append('<h2><button id="' + i + '" class="label label-danger clearReservation">X</button> <span class="label label-primary">' + tableNumber + "</span> " + tableData[i].name + "</h2>");
+            var tableNumber = i + 1;
+
+            // Then display the remaining fields in the HTML (Section Name, Date, URL)
+            $("#tableWell-"+ i+1).append('<h2><button id="' + i + '" class="label label-danger clearReservation">X</button> <span class="label label-primary">' + tableNumber + "</span> " + tableData[i].name + "</h2>");
+
+        }
+        
+        if (tableData.length > 4) {
+            runWaitListQuery(tableData);
+        }
+    });
                 }
             
                 function runWaitListQuery(tableData){
