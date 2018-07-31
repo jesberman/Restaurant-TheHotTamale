@@ -9,7 +9,7 @@
     </title>
 
     <link rel="stylesheet" href="assets/css/style.css">
-
+    <script src="https://code.jquery.com/jquery.js"></script>
 </head>
 
 
@@ -50,11 +50,39 @@
             <div class="form-group">
                 <input class="form-control form-control-lg" type="text" placeholder="Unique ID" id="form-uniqueID">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" id = "add-btn">Submit</button>
         </fieldset>
     </form>
+
+
+
+
+
+
+<script type="text/javascript">
+$('#add-btn').on('click', function(event){
+event.preventDefault();
+
+var newReservation = {
+    name: $('#form-name').val().trim(),
+    phone_number: $('#form-phone').val().trim(),
+    email: $('#form-email').val().trim(),
+    unqique_id: $('#form-unqiqueID').val().trim()
+};
+
+$.post('/reserve', newReservation)
+    .then(function(data) {
+        console.log("reserve.html", data);
+    });
+
+})
+
+
+
+
+</script>
+
+
+
 </body>
-
-
-
 </html>
