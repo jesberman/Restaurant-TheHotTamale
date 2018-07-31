@@ -1,53 +1,74 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-
     <title>
         The Hot Tamale! ViewTables
     </title>
     <link rel="stylesheet" href="https://bootswatch.com/4/journal/bootstrap.min.css">
-
+    <script src="https://code.jquery.com/jquery.js"></script>
 </head>
-
-<body>
-    <div class="jumbotron">
-        <h1 class="display-3">Welcome to the Hot Tamale!</h1>
-        <p class="lead">If you would like to sample our fine dining, please register a table below.</p>
-        <hr class="my-4">
-        <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button">Register a Table</a>
-            <a class="btn btn-info btn-lg" href="#" role="button">View Tables</a>
-
-        </p>
-    </div>
-
-    <div class="card border-primary mb-3" style="max-width: 90vw; position: relative; left:5vw;">
-        <div class="card-header">Current Reservations</div>
-
-
-        <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
-                <div class="card-body">
-                  <h4 class="card-title">Reservation</h4>
+        <body>
+            <div class="container">
+                <div class="jumbotron">
+                    <h1 class="display-3">Welcome to the Hot Tamale!</h1>
+                    <p class="lead">If you would like to sample our fine dining, please register a table below.</p>
+                    <hr class="my-4">
+                    <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="#" role="button">Register a Table</a>
+                    <a class="btn btn-info btn-lg" href="#" role="button">View Tables</a>
+                    </p>
                 </div>
-              </div>
-              
-        </div>
-    </div>
-
-    <div class="card border-primary mb-3" style="max-width: 90vw; position: relative; left:5vw;">
-        <div class="card-header">Wating List</div>
-
-
-        <div class="card text-white bg-danger mb-3" style="max-width: 20rem;">
-                <div class="card-body">
-                  <h4 class="card-title">WatingList</h4>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Current Tables in Use -->
+                        <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Current Reservations</h4>
+                                </div>
+                                <div class="panel-body" id="tableSection">
+                                </div>
+                        </div>
+                        <!-- Waiting List Panel -->
+                        <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Waiting List</h4>
+                                </div>
+                                <div class="panel-body" id="waitlistSection">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              
-        </div>
-    </div>
+        </body>
+        <script type="text/javascript">
 
-</body>
+                function runReservationQuery(){
+                    var currentURL = window.location.origin;
 
+		            $.ajax({url: currentURL + "/api/tables", method: "GET"})
+			        .done(function(tableData) {
+					$("#tableSection").empty();
+					$("#waitlistSection").empty();
 
+				    // Loop through and display each of the customers
+				    for (var i=0; i<tableData.length && i < 5; i++){
 
+					// Create the HTML Well (Section) and Add the table content for each reserved table
+					var tableSection = $("<div>");
+					tableSection.addClass('well');
+					tableSection.attr('id', 'tableWell-' + i+1)
+					$('#tableSection').append(tableSection);
+
+                    var tableNumber = i + 1;
+                    
+                    // Then display the remaining fields in the HTML (Section Name, Date, URL)
+					$("#tableWell-"+ i+1).append('<h2><button id="' + i + '" class="label label-danger clearReservation">X</button> <span class="label label-primary">' + tableNumber + "</span> " + tableData[i].name + "</h2>");
+                }
+            
+                function runWaitListQuery(tableData){
+                }
+        
+                function clearTable(){
+                }
+        </script>
 </html>
